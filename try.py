@@ -1,9 +1,9 @@
-import os
+import os 
 import json
 
 # Specify the directory containing the JSON files
-input_folder = r"d:\dataset\QSUM\QMSum\data\Product\all"
-output_folder = r"d:\dataset\QSUM\QMSum\data\Product\processed"
+input_folder = r"D:\dataset\QSUM\QMSum\data\ALL\val"
+output_folder = r"D:\dataset\QSUM\QMSum\data\ALL\valProcessed"
 
 # Ensure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
@@ -22,12 +22,8 @@ for filename in os.listdir(input_folder):
             entry["content"] for entry in data["meeting_transcripts"]
         )
         
-        # Extract the summary
-        summary = next(
-            (query["answer"] for query in data["general_query_list"]
-             if query["query"].lower() == "summarize the whole meeting."),
-            None
-        )
+        # Extract the summary (answer of the first query in the array)
+        summary = data["general_query_list"][0]["answer"] if data["general_query_list"] else None
         
         # Create the output format
         output = [{"transcript": transcript_content, "summarize": summary}]
